@@ -1,0 +1,28 @@
+version: '3.8'
+
+networks:
+  danapunia_network:
+
+
+services:
+  danapunia-postgresdb:
+    image: postgres:13
+    container_name: danapunia-postgres
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - danapunia_postgres_data:/var/lib/postgresql/data
+      - type: bind
+        source: src/db/prisma/postgresql
+        target: /var/lib/postgresql/data
+        bind:
+          create_host_path: true
+    networks:
+      - danapunia_network
+
+volumes:
+  danapunia_postgres_data:
