@@ -1,5 +1,5 @@
 import { Controller, Post } from '@nestjs/common';
-import { OrganizationAdminAuthService } from './organization-admin.service';
+import { OrganizationAdminAuthService } from '../service/organization-admin.service';
 
 @Controller('auth/organization-admin')
 export class OrganizationAdminAuthController {

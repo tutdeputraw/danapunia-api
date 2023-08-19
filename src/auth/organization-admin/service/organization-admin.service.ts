@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthBaseService } from '../auth.base';
+import { AuthBaseService } from 'src/auth/auth.base';
 import { OrganizationAdminRepository } from 'src/organization-admin/repository/organization-admin.repository';
 
 @Injectable()

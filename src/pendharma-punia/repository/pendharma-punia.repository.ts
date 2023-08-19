@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PendharmaPunia, Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/prisma/service/prisma.service';
 
 @Injectable()
 export class PendharmaPuniaRepository {
@@ -9,7 +9,7 @@ export class PendharmaPuniaRepository {
     async createPendharmaPunia(
         data: Prisma.PendharmaPuniaCreateInput
     ): Promise<PendharmaPunia> {
-        return this.prisma.pendharmaPunia.create({ data });
+        return await this.prisma.pendharmaPunia.create({ data });
     }
 
     async getPendharmaPunia(

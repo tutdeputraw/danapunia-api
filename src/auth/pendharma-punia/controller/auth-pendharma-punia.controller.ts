@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-import { PendharmaPuniaService as PendharmaPuniaAuthService } from './pendharma-punia.service';
 import { CreateUserDTO } from 'src/users/dto/create-user.dto';
+import { PendharmaPuniaAuthService } from '../service/pendharma-punia.service';
 
 @Controller('auth/pendharma-punia')
 export class PendharmaPuniaAuthController {
@@ -15,7 +15,8 @@ export class PendharmaPuniaAuthController {
     @UsePipes(new ValidationPipe())
     async signUp(@Body() userData: CreateUserDTO) {
         const user = await this.pendharmaPuniaService.signUp(userData);
-        // const pendharmaPunia = await PendharmaPuniaRepository
+        delete user.password;
+
         return { data: user };
     }
 }
