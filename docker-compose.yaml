@@ -17,7 +17,7 @@ services:
     volumes:
       - danapunia_postgres_data:/var/lib/postgresql/data
       - type: bind
-        source: src/db/prisma/postgresql
+        source: db/prisma/postgresql
         target: /var/lib/postgresql/data
         bind:
           create_host_path: true
