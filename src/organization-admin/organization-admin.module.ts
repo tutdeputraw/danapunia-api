@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { OrganizationAdminRepository } from './organization-admin.repository';
+import { OrganizationAdminRepository } from './repository/organization-admin.repository';
 
 @Module({
   providers: [OrganizationAdminRepository],

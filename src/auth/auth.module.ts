@@ -3,10 +3,10 @@ import { PendharmaPuniaAuthController } from './pendharma-punia/auth-pendharma-p
 import { OrganizationAdminAuthController } from './organization-admin/organization-admin.controller';
 import { PendharmaPuniaService } from './pendharma-punia/pendharma-punia.service';
 import { OrganizationAdminAuthService } from './organization-admin/organization-admin.service';
-import { PendharmaPuniaRepository } from 'src/pendharma-punia/pendharma-punia.repository';
-import { OrganizationAdminRepository } from 'src/organization-admin/organization-admin.repository';
+import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
+import { OrganizationAdminRepository } from 'src/organization-admin/repository/organization-admin.repository';
 import { UsersModule } from 'src/users/users.module';
-import { UsersRepository } from 'src/users/users.repository';
+import { UsersRepository } from 'src/users/repository/users.repository';
 
 @Module({
   controllers: [

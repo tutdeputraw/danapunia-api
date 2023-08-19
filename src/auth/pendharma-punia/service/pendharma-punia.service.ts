@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { AuthBaseService } from '../auth.base';
-import { PendharmaPuniaRepository } from 'src/pendharma-punia/pendharma-punia.repository';
+import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
 import { PendharmaPunia, Prisma, User } from '@prisma/client';
-import { UsersRepository } from 'src/users/users.repository';
+import { UsersRepository } from 'src/users/repository/users.repository';
 
 @Injectable()
 export class PendharmaPuniaService implements AuthBaseService {
