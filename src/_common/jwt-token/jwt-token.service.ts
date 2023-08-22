@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
-import { jwtConstants } from 'src/auth/constants';
 
 @Injectable()
 export class JwtTokenService {
@@ -21,7 +20,7 @@ export class JwtTokenService {
     private async generateToken(payload: object): Promise<String> {
         return this.jwtService.signAsync(payload, {
             privateKey: process.env.JWT_TOKEN,
-            expiresIn: '60s',
+            expiresIn: '1h',
         });
     }
 

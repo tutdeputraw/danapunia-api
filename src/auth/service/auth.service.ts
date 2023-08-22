@@ -18,15 +18,23 @@ export class AuthService {
     ) { }
 
     async signIn(data: SignInDTO) {
-        const user = await this.userRepository.getUser({ email: data.email });
+        const user = await this.userRepository.getUser({
+            email: data.email
+        }, {
+            // organizationAdmin: true,
+            // pendharmaPunia: true,
+        });
+        user.organizationAdminId == null ? delete user.organizationAdminId : delete user.pendharmaPuniaId;
         if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
         const isPasswordMatched = await this.passwordService.comparePasswords(data.password, user.password);
         if (!isPasswordMatched) throw new HttpException('Password does not match', HttpStatus.UNAUTHORIZED);
 
+        delete user.password;
+
         const token = await this.jwtTokenService.getUserJWT(user);
 
-        return { token };
+        return { user, token };
     }
 
     async signUpPendharmaPunia(data: Prisma.UserCreateInput) {

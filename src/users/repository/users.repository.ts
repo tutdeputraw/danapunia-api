@@ -14,10 +14,13 @@ export class UsersRepository {
     }
 
     async getUser(
-        userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+        where: Prisma.UserWhereUniqueInput,
+        include?: Prisma.UserInclude,
+        select?: Prisma.UserSelect,
     ): Promise<User | null> {
         return this.prisma.user.findUnique({
-            where: userWhereUniqueInput,
+            where,
+            include,
         });
     }
 

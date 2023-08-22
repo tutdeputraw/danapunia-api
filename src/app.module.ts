@@ -6,6 +6,7 @@ import { OrganizationAdminModule } from './organization-admin/organization-admin
 import { PendharmaPuniaModule } from './pendharma-punia/pendharma-punia.module';
 import { PasswordModule } from './_common/password/password.module';
 import { JwtTokenModule } from './_common/jwt-token/jwt-token.module';
+import { RolesModule } from './_common/roles/roles.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { JwtTokenModule } from './_common/jwt-token/jwt-token.module';
     PendharmaPuniaModule,
     PasswordModule,
     JwtTokenModule,
+    RolesModule,
   ],
 })
 export class AppModule { }
