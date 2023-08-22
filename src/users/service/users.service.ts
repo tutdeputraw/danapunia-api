@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from '../repository/users.repository';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
     constructor(private repository: UsersRepository) { }
 
-    getUsers() {
-        return this.repository.getUsers({});
+    getUsers(where: Prisma.UserWhereInput) {
+        return this.repository.getUsers({
+            where,
+        });
     }
 
     createUser() {

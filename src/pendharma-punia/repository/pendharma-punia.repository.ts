@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PendharmaPunia, Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { PrismaService } from 'src/_common/prisma/service/prisma.service';
 
 @Injectable()
 export class PendharmaPuniaRepository {

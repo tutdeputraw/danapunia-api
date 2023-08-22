@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { OrganizationAdmin, Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { PrismaService } from 'src/_common/prisma/service/prisma.service';
 
 @Injectable()
 export class OrganizationAdminRepository {
     constructor(private prisma: PrismaService) { }
 
-    async createPendharmaPunia(
+    async createOrganizationAdmin(
         data: Prisma.OrganizationAdminCreateInput
     ): Promise<OrganizationAdmin> {
         return this.prisma.organizationAdmin.create({ data });
     }
 
-    async getPendharmaPunia(
+    async getOrganizationAdmin(
         userWhereUniqueInput: Prisma.OrganizationAdminWhereUniqueInput,
     ): Promise<OrganizationAdmin | null> {
         return this.prisma.organizationAdmin.findUnique({
@@ -20,7 +20,7 @@ export class OrganizationAdminRepository {
         });
     }
 
-    async getPendharmaPunias(params: {
+    async getOrganizationAdmins(params: {
         skip?: number;
         take?: number;
         cursor?: Prisma.OrganizationAdminWhereUniqueInput;
@@ -37,7 +37,7 @@ export class OrganizationAdminRepository {
         });
     }
 
-    async updatePendharmaPunia(params: {
+    async updateOrganizationAdmin(params: {
         where: Prisma.OrganizationAdminWhereUniqueInput;
         data: Prisma.OrganizationAdminUpdateInput;
     }): Promise<OrganizationAdmin> {
@@ -48,7 +48,7 @@ export class OrganizationAdminRepository {
         });
     }
 
-    async deletePendharmaPunia(
+    async deleteOrganizationAdmin(
         where: Prisma.OrganizationAdminWhereUniqueInput
     ): Promise<OrganizationAdmin> {
         return this.prisma.organizationAdmin.delete({

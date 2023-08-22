@@ -3,22 +3,37 @@ import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendhar
 import { OrganizationAdminRepository } from 'src/organization-admin/repository/organization-admin.repository';
 import { UsersModule } from 'src/users/users.module';
 import { UsersRepository } from 'src/users/repository/users.repository';
-import { PendharmaPuniaAuthController } from './pendharma-punia/controller/auth-pendharma-punia.controller';
-import { OrganizationAdminAuthController } from './organization-admin/controller/organization-admin.controller';
-import { OrganizationAdminAuthService } from './organization-admin/service/organization-admin.service';
-import { PendharmaPuniaAuthService } from './pendharma-punia/service/pendharma-punia.service';
+import { PasswordService } from 'src/_common/password/password.service';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { jwtConstants } from './constants';
+import { AuthController } from './controller/auth.controller';
+import { AuthService } from './service/auth.service';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   controllers: [
-    PendharmaPuniaAuthController,
-    OrganizationAdminAuthController,
+    //
+    AuthController,
+  ],
+  imports: [
+    //
+    UsersModule,
+    JwtModule.register({
+      global: true,
+    }),
   ],
   providers: [
-    PendharmaPuniaAuthService,
-    OrganizationAdminAuthService,
     PendharmaPuniaRepository,
     OrganizationAdminRepository,
-    UsersRepository
+    UsersRepository,
+    PasswordService,
+    JwtService,
+    AuthService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
 })
 export class AuthModule { }

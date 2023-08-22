@@ -1,5 +1,7 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Query, UseGuards, UsePipes, } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
+import { Prisma } from '@prisma/client';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -20,8 +22,11 @@ export class UsersController {
     async createAdmin() { }
 
     @Get()
-    async getUsers() {
-        const users = await this.userService.getUsers();
-        return { data: users };
+    // @UseGuards(AuthGuard)
+    async getUsers(
+        @Query() filters: Prisma.UserWhereInput,
+    ) {
+        const users = await this.userService.getUsers(filters);
+        return { data: users }
     }
 }

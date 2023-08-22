@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { DefaultArgs } from '@prisma/client/runtime/library';
+import { PrismaService } from 'src/_common/prisma/service/prisma.service';
 
 @Injectable()
 export class UsersRepository {
@@ -26,14 +27,16 @@ export class UsersRepository {
         cursor?: Prisma.UserWhereUniqueInput;
         where?: Prisma.UserWhereInput;
         orderBy?: Prisma.UserOrderByWithRelationInput;
+        include?: Prisma.UserInclude;
     }): Promise<User[]> {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy, include } = params;
         return this.prisma.user.findMany({
             skip,
             take,
             cursor,
             where,
             orderBy,
+            include,
         });
     }
 
