@@ -1,9 +1,9 @@
-import { Body, Controller, Post, Query } from '@nestjs/common';
-import { CreateUserDTO } from 'src/users/dto/create-user.dto';
-import { SignInDTO } from '../dto/auth.dto';
+import { Body, Controller, Post, } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
 import { Public } from '../constants';
-import { Prisma } from '@prisma/client';
+import { SignInDTO } from '../dto/sign-in.dto';
+import { SignUpOrganizationAdminDTO, SignUpPendharmaPuniaDTO } from '../dto/sign-up.dto';
+import { Role } from 'src/_common/roles/role.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -16,21 +16,25 @@ export class AuthController {
     }
 
     @Public()
-    @Post('sign-up')
-    async signUp(
-        @Body() userData: CreateUserDTO,
-        @Query('isAdmin') isAdmin: string,
+    @Post('sign-up/pendharma-punia')
+    async signUpPendharmaPunia(
+        @Body() userData: SignUpPendharmaPuniaDTO
     ) {
-        var user: Prisma.UserCreateInput;
-
-        if (!isAdmin || isAdmin.toLowerCase() === 'false') { // is pendharma punia
-            user = await this.authService.signUpPendharmaPunia(userData);
-        } else if (isAdmin.toLowerCase() === 'true') { // is organizationAdmin
-            user = await this.authService.signUpOrganizationAdmin(userData);
-        }
-
+        const user = await this.authService.signUpPendharmaPunia(userData);
         delete user.password;
 
-        return { user };
+        return user;
+        // return userData
+    }
+
+    @Public()
+    @Post('sign-up/organization-admin')
+    async signUpOrganizationAdmin(
+        @Body() userData: SignUpOrganizationAdminDTO
+    ) {
+        const user = await this.authService.signUpOrganizationAdmin(userData);
+        delete user.password;
+
+        return user;
     }
 }

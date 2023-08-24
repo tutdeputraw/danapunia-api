@@ -1,30 +1,30 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PasswordService } from 'src/_common/password/password.service';
-import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
-import { UsersRepository } from 'src/users/repository/users.repository';
-import { SignInDTO } from '../dto/auth.dto';
+import { UserRepository } from 'src/users/repository/user.repository';
 import { JwtTokenService } from 'src/_common/jwt-token/jwt-token.service';
 import { OrganizationAdminRepository } from 'src/organization-admin/repository/organization-admin.repository';
+import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
+import { SignUpOrganizationAdminDTO, SignUpPendharmaPuniaDTO } from '../dto/sign-up.dto';
+import { SignInDTO } from '../dto/sign-in.dto';
+import { Role } from 'src/_common/roles/role.enum';
 
 @Injectable()
 export class AuthService {
     constructor(
+        private passwordService: PasswordService,
+        private jwtTokenService: JwtTokenService,
         private pendharmaPuniaRepository: PendharmaPuniaRepository,
         private organizationAdminRepository: OrganizationAdminRepository,
-        private passwordService: PasswordService,
-        private userRepository: UsersRepository,
-        private jwtTokenService: JwtTokenService,
+        private userRepository: UserRepository,
     ) { }
 
     async signIn(data: SignInDTO) {
         const user = await this.userRepository.getUser({
             email: data.email
         }, {
-            // organizationAdmin: true,
-            // pendharmaPunia: true,
+            OrganizationAdmin: true,
+            PendharmaPunia: true
         });
-        user.organizationAdminId == null ? delete user.organizationAdminId : delete user.pendharmaPuniaId;
         if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
         const isPasswordMatched = await this.passwordService.comparePasswords(data.password, user.password);
@@ -37,24 +37,46 @@ export class AuthService {
         return { user, token };
     }
 
-    async signUpPendharmaPunia(data: Prisma.UserCreateInput) {
+    async signUpPendharmaPunia(data: SignUpPendharmaPuniaDTO) {
+        const { email, birthDate, createdAt, name, phoneNumber } = data;
         const password = await this.passwordService.hashPassword(data.password);
 
         await this.pendharmaPuniaRepository.createPendharmaPunia({
             User: {
-                create: { ...data, password }
-            }
+                create: {
+                    email, birthDate, createdAt, name, phoneNumber, password,
+                    Role: {
+                        connectOrCreate: {
+                            where: { name: Role.PendharmaPunia },
+                            create: { name: Role.PendharmaPunia }
+                        },
+                    }
+                }
+            },
         });
         return data;
     }
 
-    async signUpOrganizationAdmin(data: Prisma.UserCreateInput) {
+    async signUpOrganizationAdmin(data: SignUpOrganizationAdminDTO) {
+        const { email, name, birthDate, createdAt, phoneNumber, ktpId } = data;
         const password = await this.passwordService.hashPassword(data.password);
 
         await this.organizationAdminRepository.createOrganizationAdmin({
             User: {
-                create: { ...data, password }
-            }
+                create: {
+                    email, name, birthDate, createdAt, phoneNumber, password,
+                    Role: {
+                        connectOrCreate: {
+                            where: { name: Role.OrganizationAdmin },
+                            create: { name: Role.OrganizationAdmin }
+                        },
+                    },
+                }
+            },
+            Organization: {
+                connect: { id: data.organizationId }
+            },
+            ktpId,
         });
         return data;
     }

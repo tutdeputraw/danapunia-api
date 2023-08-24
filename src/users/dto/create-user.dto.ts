@@ -24,4 +24,16 @@ export class CreateUserDTO implements Prisma.UserCreateInput {
     @IsOptional()
     @IsNumber()
     pendharmaPunia?: Prisma.PendharmaPuniaCreateNestedOneWithoutUserInput;
+
+    @IsOptional()
+    createdAt?: string | Date;
+
+    @IsOptional()
+    OrganizationAdmin?: Prisma.OrganizationAdminCreateNestedOneWithoutUserInput;
+
+    @IsOptional()
+    PendharmaPunia?: Prisma.PendharmaPuniaCreateNestedOneWithoutUserInput;
+
+    @IsNotEmpty()
+    Role: Prisma.RoleCreateNestedOneWithoutUserInput;
 }

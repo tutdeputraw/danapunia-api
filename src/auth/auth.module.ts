@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
 import { OrganizationAdminRepository } from 'src/organization-admin/repository/organization-admin.repository';
-import { UsersModule } from 'src/users/users.module';
-import { UsersRepository } from 'src/users/repository/users.repository';
+import { UserModule } from 'src/users/user.module';
+import { UserRepository } from 'src/users/repository/user.repository';
 import { PasswordService } from 'src/_common/password/password.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
@@ -10,6 +9,7 @@ import { AuthController } from './controller/auth.controller';
 import { AuthService } from './service/auth.service';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
+import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
 
 @Module({
   controllers: [
@@ -18,7 +18,7 @@ import { AuthGuard } from './guards/auth.guard';
   ],
   imports: [
     //
-    UsersModule,
+    UserModule,
     JwtModule.register({
       global: true,
     }),
@@ -26,10 +26,11 @@ import { AuthGuard } from './guards/auth.guard';
   providers: [
     PendharmaPuniaRepository,
     OrganizationAdminRepository,
-    UsersRepository,
+    UserRepository,
     PasswordService,
     JwtService,
     AuthService,
+    // OrganizationRepos
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

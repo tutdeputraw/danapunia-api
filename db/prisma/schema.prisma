@@ -11,25 +11,112 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  name      String?
-  birthDate DateTime?
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String
+  name        String?
+  phoneNumber String?
+  birthDate   DateTime?
+  createdAt   DateTime  @default(now())
 
-  organizationAdmin   OrganizationAdmin? @relation(fields: [organizationAdminId], references: [id])
-  organizationAdminId Int?
+  OrganizationAdmin OrganizationAdmin?
+  PendharmaPunia    PendharmaPunia?
+  Role              Role?              @relation(fields: [roleId], references: [id])
+  roleId            Int
+}
 
-  pendharmaPunia   PendharmaPunia? @relation(fields: [pendharmaPuniaId], references: [id])
-  pendharmaPuniaId Int?
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  User User[]
 }
 
 model OrganizationAdmin {
-  id   Int    @id @default(autoincrement())
-  User User[]
+  id    Int @id @default(autoincrement())
+  ktpId Int @unique
+
+  userId         Int           @unique
+  User           User          @relation(fields: [userId], references: [id])
+  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId Int?
 }
 
 model PendharmaPunia {
-  id   Int    @id @default(autoincrement())
-  User User[]
+  id Int @id @default(autoincrement())
+
+  userId  Int       @unique
+  User    User      @relation(fields: [userId], references: [id])
+  Program Program[] @relation("Punia")
+  Punia   Punia[]
+}
+
+model Program {
+  id             Int      @id @default(autoincrement())
+  name           String
+  createdAt      DateTime @default(now())
+  deadline       DateTime
+  moneyTargets   Float
+  collectedMoney Float?
+
+  Organization   Organization?     @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  PendharmaPunia PendharmaPunia[]  @relation("Punia")
+  Punia          Punia[]
+  PuniaProgress  ProgramProgress[]
+}
+
+model ProgramProgress {
+  id          Int      @id @default(autoincrement())
+  media       Bytes?
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+
+  Program   Program? @relation(fields: [programId], references: [id])
+  programId Int?
+}
+
+model Punia {
+  id               Int      @id @default(autoincrement())
+  programId        Int
+  pendharmaPuniaId Int
+  createdAt        DateTime @default(now())
+  money            Float
+
+  BankAccount    BankAccount     @relation(fields: [bankAccountId], references: [id])
+  Program        Program         @relation(fields: [programId], references: [id])
+  PendharmaPunia PendharmaPunia? @relation(fields: [pendharmaPuniaId], references: [id])
+  bankAccountId  Int
+}
+
+model Pura {
+  id      Int    @id @default(autoincrement())
+  name    String
+  address String
+
+  Organization Organization[]
+  createdAt    DateTime       @default(now())
+}
+
+model Organization {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String
+
+  pura        Pura?               @relation(fields: [puraId], references: [id])
+  puraId      Int?
+  BankAccount BankAccount[]
+  Admin       OrganizationAdmin[]
+  Program     Program[]
+}
+
+model BankAccount {
+  id            Int      @id @default(autoincrement())
+  name          String
+  accountNumber String
+  createdAt     DateTime @default(now())
+
+  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  Punia          Punia[]
 }
