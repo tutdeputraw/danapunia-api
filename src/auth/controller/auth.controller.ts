@@ -3,7 +3,7 @@ import { AuthService } from '../service/auth.service';
 import { Public } from '../constants';
 import { SignInDTO } from '../dto/sign-in.dto';
 import { SignUpOrganizationAdminDTO, SignUpPendharmaPuniaDTO } from '../dto/sign-up.dto';
-import { Role } from 'src/_common/roles/role.enum';
+import { SkipAuth } from 'src/role/constants';
 
 @Controller('auth')
 export class AuthController {
@@ -11,11 +11,13 @@ export class AuthController {
 
     @Post('sign-in')
     @Public()
+    @SkipAuth()
     async signIn(@Body() data: SignInDTO) {
         return this.authService.signIn(data);
     }
 
     @Public()
+    @SkipAuth()
     @Post('sign-up/pendharma-punia')
     async signUpPendharmaPunia(
         @Body() userData: SignUpPendharmaPuniaDTO
@@ -24,7 +26,6 @@ export class AuthController {
         delete user.password;
 
         return user;
-        // return userData
     }
 
     @Public()

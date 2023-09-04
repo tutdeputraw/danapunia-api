@@ -4,12 +4,12 @@ import { UserModule } from 'src/users/user.module';
 import { UserRepository } from 'src/users/repository/user.repository';
 import { PasswordService } from 'src/_common/password/password.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
 import { AuthController } from './controller/auth.controller';
 import { AuthService } from './service/auth.service';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
 import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
+import { RoleRepository } from 'src/role/repository/role.repository';
 
 @Module({
   controllers: [
@@ -27,6 +27,7 @@ import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendhar
     PendharmaPuniaRepository,
     OrganizationAdminRepository,
     UserRepository,
+    RoleRepository,
     PasswordService,
     JwtService,
     AuthService,

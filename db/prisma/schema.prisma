@@ -39,6 +39,7 @@ model OrganizationAdmin {
   User           User          @relation(fields: [userId], references: [id])
   Organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId Int?
+  programs       Program[]
 }
 
 model PendharmaPunia {
@@ -58,11 +59,13 @@ model Program {
   moneyTargets   Float
   collectedMoney Float?
 
-  Organization   Organization?     @relation(fields: [organizationId], references: [id])
-  organizationId Int?
-  PendharmaPunia PendharmaPunia[]  @relation("Punia")
-  Punia          Punia[]
-  PuniaProgress  ProgramProgress[]
+  Organization        Organization?      @relation(fields: [organizationId], references: [id])
+  organizationId      Int?
+  PendharmaPunia      PendharmaPunia[]   @relation("Punia")
+  Punia               Punia[]
+  PuniaProgress       ProgramProgress[]
+  OrganizationAdmin   OrganizationAdmin? @relation(fields: [organizationAdminId], references: [id])
+  organizationAdminId Int?
 }
 
 model ProgramProgress {

@@ -5,6 +5,7 @@ import { OrganizationService } from '../service/organization.service';
 import { Public } from 'src/auth/constants';
 
 @Controller('organization')
+@Public()
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) { }
 

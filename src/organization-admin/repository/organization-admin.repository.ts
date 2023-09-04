@@ -14,9 +14,11 @@ export class OrganizationAdminRepository {
 
     async getOrganizationAdmin(
         userWhereUniqueInput: Prisma.OrganizationAdminWhereUniqueInput,
+        include?: Prisma.OrganizationAdminInclude
     ): Promise<OrganizationAdmin | null> {
         return this.prisma.organizationAdmin.findUnique({
             where: userWhereUniqueInput,
+            include,
         });
     }
 

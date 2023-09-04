@@ -6,7 +6,8 @@ import { OrganizationAdminRepository } from 'src/organization-admin/repository/o
 import { PendharmaPuniaRepository } from 'src/pendharma-punia/repository/pendharma-punia.repository';
 import { SignUpOrganizationAdminDTO, SignUpPendharmaPuniaDTO } from '../dto/sign-up.dto';
 import { SignInDTO } from '../dto/sign-in.dto';
-import { Role } from 'src/_common/roles/role.enum';
+import { Role } from 'src/role/role.enum';
+import { RoleRepository } from 'src/role/repository/role.repository';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
         private pendharmaPuniaRepository: PendharmaPuniaRepository,
         private organizationAdminRepository: OrganizationAdminRepository,
         private userRepository: UserRepository,
+        private roleRepository: RoleRepository,
     ) { }
 
     async signIn(data: SignInDTO) {
@@ -33,6 +35,9 @@ export class AuthService {
         delete user.password;
 
         const token = await this.jwtTokenService.getUserJWT(user);
+
+        const role = await this.roleRepository.getRole({ id: user.roleId })
+        user['roleName'] = role.name
 
         return { user, token };
     }

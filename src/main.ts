@@ -8,7 +8,12 @@ async function bootstrap() {
 
   app.useGlobalFilters(new PrismaExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({
+    origin: '*', // Allow all origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow all methods
+    allowedHeaders: '*', // Allow all headers
+  });
 
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();
